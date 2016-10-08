@@ -49,4 +49,23 @@ public class ModelNode
 		return name;
 	}
 
+	public QueryMap getQueries ()
+	{
+		return addQueries (new QueryMap (reprFactory));
+	}
+
+	private QueryMap addQueries (QueryMap queryMap)
+	{
+		// FIXME: cache the methods.
+		// FIXME: abstract away from using reflection.
+		for (Method m : clazz.getMethods ())
+		{
+			if (!m.isAnnotationPresent (EntityQuery.class)) continue;
+			if (m.getParameterTypes ().length > 0) continue;
+			queryMap.addQuery (methodNameToKey (m.getName ()), new QueryMethod(m, node));
+		}
+		return queryMap;
+	}
+
+	
 }
