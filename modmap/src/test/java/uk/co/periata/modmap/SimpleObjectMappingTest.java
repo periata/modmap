@@ -70,4 +70,29 @@ public class SimpleObjectMappingTest
 		assertEquals ("{ \"child\": { \"name\": \"Bob\" }, \"name\": \"Alice\" }", 
 		              new CompositionRoot (to3).executeQuery(""));
 	}
+	
+	public static class TestObject4
+	{
+		private String name;
+		private TestObject child;
+		@Attribute
+		public String getName () { return name; }
+		public void setName (String name) { this.name = name; }
+		@EntityQuery
+		public TestObject getChild () { return child; }
+		public void setChild (TestObject child) { this.child = child; }
+		
+	}
+	@Test
+	public void entityQueriesNotIncludedWhenNotSelected ()
+	{
+		TestObject to = new TestObject ();
+		to.setName ("Bob");
+		TestObject4 to4 = new  TestObject4 ();
+		to4.setName ("Alice");
+		to4.setChild (to);
+		assertEquals ("{ \"name\": \"Alice\" }", 
+		              new CompositionRoot (to4).executeQuery(""));
+	}
+	
 }
