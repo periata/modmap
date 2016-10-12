@@ -23,4 +23,12 @@ public class DifferenceTest
 		                                   new ObjectMap ().addAttribute ("key", new JSONString ("value"))),
 		            contains (ObjectMapDifference.insertion ("key", new JSONString ("value"))));
 	}
+	@Test
+	public void nodeWithMissingAttributeGivesDeletion ()
+	{
+		assertThat (sut.differenceBetween (new ObjectMap ().addAttribute ("key", new JSONString ("value")),
+		                                   new ObjectMap()),
+		            contains (ObjectMapDifference.deletion ("key")));
+		
+	}
 }

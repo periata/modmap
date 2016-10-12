@@ -1,6 +1,6 @@
 package uk.co.periata.modmap;
 
-import static uk.co.periata.modmap.ObjectMapDifference.insertion;
+import static uk.co.periata.modmap.ObjectMapDifference.*;
 
 import java.util.Map;
 import java.util.Set;
@@ -22,6 +22,9 @@ public class ObjectMapDifferencer
 			
 			result.add (insertion (attribute.getKey (), attribute.getValue ()));
 		}
+		for (Map.Entry<String, JSONRepresentable> attribute : last.attributeSet ())
+			if (!next.getAttribute (attribute.getKey ()).isPresent ())
+				result.add (deletion (attribute.getKey ()));
 		return result;
 	}
 

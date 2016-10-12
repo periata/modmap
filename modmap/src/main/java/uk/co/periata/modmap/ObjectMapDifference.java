@@ -3,6 +3,8 @@ package uk.co.periata.modmap;
 import java.util.Collections;
 import java.util.Set;
 
+import org.hamcrest.Matcher;
+
 /**
  * Represents a difference between two {@link ObjectMap} values.
  */
@@ -135,5 +137,11 @@ public class ObjectMapDifference implements Comparable<ObjectMapDifference>
 		if (r == 0) r = IterableComparison.compare (modifications.stream ().sorted ().iterator (),
 		                                            o.getModifications ().stream ().sorted ().iterator ());
 		return r;
+	}
+
+
+	public static ObjectMapDifference deletion (String key)
+	{
+		return new ObjectMapDifference (DifferenceType.DELETION, key, JSONRepresentable.NULL);
 	}
 }
