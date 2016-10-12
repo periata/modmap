@@ -4,9 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import uk.co.periata.modmap.EntityQueryTest.EntityRoot;
-import uk.co.periata.modmap.EntityQueryTest.SimpleEntity;
-
 public class SimpleObjectMappingTest
 {
 	public static class TestObject
