@@ -84,14 +84,19 @@ public class EntityQueryTest
 	public void focusReceiverCalledInSimpleQuery ()
 	{
 		AtomicReference<ModelNode> focus = new AtomicReference<ModelNode> (null);
+		AtomicReference<ObjectMap> childMap  = new  AtomicReference<ObjectMap> (null);
 		
 		EntityRoot r = new EntityRoot ();
 		SimpleEntity e = new SimpleEntity ();
 		e.setName ("Bob");
 		r.setAnEntity (e);
 		
-		new CompositionRoot (r).executeQuery (new IdentifiedEntityQuery ("anEntity"), focus::set);
+		new CompositionRoot (r).executeQuery (new IdentifiedEntityQuery ("anEntity"), (f, o) -> {
+			focus.set (f);
+			childMap.set (o);
+		});
 		
 		assertSame (e, focus.get ().getNode ());		
+		assertEquals ("{ \"name\": \"Bob\" }", childMap.get ().toString ());
 	}
 }

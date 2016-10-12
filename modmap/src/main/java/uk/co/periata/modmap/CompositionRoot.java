@@ -1,6 +1,6 @@
 package uk.co.periata.modmap;
 
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 /**
  * Contains an object that defines the root of the hierarchy to be queried
@@ -39,7 +39,7 @@ public class CompositionRoot
 		return executeQuery (query, Query.NULL_FOCUS_RECEIVER);
 	}
 
-	public String executeQuery (Query query, Consumer<ModelNode> focusReceiver)
+	public String executeQuery (Query query, BiConsumer<ModelNode, ObjectMap> focusReceiver)
 	{		
 		ObjectMap attributes = modelNode.getAttributes ();
 		query.executeQuery (modelNode, attributes, focusReceiver);

@@ -1,6 +1,6 @@
 package uk.co.periata.modmap;
 
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 /**
  * Identifies an entity mapped in the current focus entity by its identifier.
@@ -15,11 +15,12 @@ public class IdentifiedEntityQuery implements Query
 	}
 	
 	@Override
-	public void executeQuery (ModelNode focus, ObjectMap objectMap, Consumer<ModelNode> newFocusReceiver)
+	public void executeQuery (ModelNode focus, ObjectMap objectMap, BiConsumer<ModelNode, ObjectMap> newFocusReceiver)
 	{
 		focus.getQueries ().execute(identifier).ifPresent (repr -> {
-			objectMap.addAttribute (identifier, repr.getAttributes ());
-			newFocusReceiver.accept (repr);
+			ObjectMap childMap = repr.getAttributes ();
+			objectMap.addAttribute (identifier, childMap);
+			newFocusReceiver.accept (repr, childMap);
 		});
 	}
 }
