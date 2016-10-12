@@ -121,4 +121,20 @@ public class EntityQueryTest
 		
 		assertEquals (2, callCount.get ());
 	}
+	
+	@Test
+	public void childQueries ()
+	{
+		EntityRoot r = new EntityRoot ();
+		SimpleEntity e = new SimpleEntity ();
+		e.setName ("Bob");
+		r.setAnEntity (e);
+
+		assertEquals ("{ \"self\": { \"anEntity\": { \"name\": \"Bob\" } } }",
+		              new CompositionRoot (r).executeQuery (
+		                      new ChildEntityQuery (new IdentifiedEntityQuery ("self"),
+		                                            new IdentifiedEntityQuery ("anEntity"))));
+	}
+
+
 }
