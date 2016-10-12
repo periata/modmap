@@ -2,6 +2,7 @@ package uk.co.periata.modmap;
 
 import static org.junit.Assert.*;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.Test;
@@ -98,5 +99,26 @@ public class EntityQueryTest
 		
 		assertSame (e, focus.get ().getNode ());		
 		assertEquals ("{ \"name\": \"Bob\" }", childMap.get ().toString ());
+	}
+	
+	@Test
+	public void focusReceiverCalledTwiceInCompoundQuery ()
+	{
+		AtomicInteger callCount = new AtomicInteger (0);
+		
+		EntityRoot r = new EntityRoot ();
+		SimpleEntity e = new SimpleEntity ();
+		e.setName ("Bob");
+		r.setAnEntity (e);
+		e = new SimpleEntity ();
+		e.setName ("Alice");
+		r.setAnotherEntity (e);
+
+		new CompositionRoot (r).executeQuery (new CompoundEntityQuery (
+		                                               new IdentifiedEntityQuery ("anEntity"),
+		                                               new IdentifiedEntityQuery ("anotherEntity")),
+		                                      (f, o) -> callCount.incrementAndGet ());
+		
+		assertEquals (2, callCount.get ());
 	}
 }
