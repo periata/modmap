@@ -36,7 +36,7 @@ public class CompositionRoot
 		return executeQuery (query, Query.NULL_FOCUS_RECEIVER);
 	}
 
-	public String executeQuery (Query query, BiConsumer<ModelNode, ObjectMap> focusReceiver)
+	String executeQuery (Query query, BiConsumer<ModelNode, ObjectMap> focusReceiver)
 	{		
 		ObjectMap attributes = modelNode.getAttributes ();
 		query.executeQuery (modelNode, attributes, focusReceiver);
