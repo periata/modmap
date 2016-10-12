@@ -18,4 +18,11 @@ public class QueryParserTest
 		assertEquals (new IdentifiedEntityQuery ("anIdentifier"),
 		              new QueryParser().parse ("anIdentifier"));
 	}
+	
+	@Test
+	public void parseIdentifierPath ()
+	{
+		assertEquals (new ChildEntityQuery (new IdentifiedEntityQuery ("parent"), new IdentifiedEntityQuery("child")),
+		              new QueryParser ().parse ("parent.child"));
+	}
 }
