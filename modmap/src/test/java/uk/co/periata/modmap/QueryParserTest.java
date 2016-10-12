@@ -32,4 +32,13 @@ public class QueryParserTest
 		assertEquals (new CompoundEntityQuery (new IdentifiedEntityQuery ("a"), new IdentifiedEntityQuery ("b")),
 		              new QueryParser ().parse ("{a,b}"));
 	}
+	
+	@Test
+	public void parseAlternativesWithChild ()
+	{
+		assertEquals (new ChildEntityQuery (
+		                  new CompoundEntityQuery (new IdentifiedEntityQuery ("a"), new IdentifiedEntityQuery ("b")),
+		                  new IdentifiedEntityQuery ("c")),
+		              new QueryParser ().parse ("{a,b}.c"));
+	}
 }
