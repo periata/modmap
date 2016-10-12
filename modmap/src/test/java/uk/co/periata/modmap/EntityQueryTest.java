@@ -39,4 +39,19 @@ public class EntityQueryTest
 		assertEquals ("{ \"anEntity\": { \"name\": \"Bob\" } }",
 		              new CompositionRoot (r).executeQuery ("anEntity"));
 	}
+	
+	@Test
+	public void queryWithSimpleQueryObject ()
+	{
+		EntityRoot r = new EntityRoot ();
+		SimpleEntity e = new SimpleEntity ();
+		e.setName ("Bob");
+		r.setAnEntity (e);
+		
+		/* A query that identifies the name of an entity causes that entity to be included */
+		assertEquals ("{ \"anEntity\": { \"name\": \"Bob\" } }",
+		              new CompositionRoot (r).executeQuery (
+		                       new IdentifiedEntityQuery ("anEntity")));
+		
+	}
 }

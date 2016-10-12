@@ -1,7 +1,5 @@
 package uk.co.periata.modmap;
 
-import java.util.Optional;
-
 /**
  * Contains an object that defines the root of the hierarchy to be queried
  * and reported. The object specified should have attributes annotated
@@ -27,14 +25,17 @@ public class CompositionRoot
 	
 	public String executeQuery (String query)
 	{
-		// FIXME: query should actually have some relevance!
-		ObjectMap attributes = modelNode.getAttributes ();
+		// FIXME: should support more types of query!
 		if (query.length () > 0)
-		{
-			QueryMap queries = modelNode.getQueries ();
-			Optional<JSONRepresentable> queryResult = queries.execute(query);
-			queryResult.ifPresent (repr -> attributes.addAttribute (query, repr));
-		}
+			return executeQuery (new IdentifiedEntityQuery (query)).toString ();
+		else
+			return modelNode.getAttributes ().toString ();
+	}
+	
+	public String executeQuery (Query query)
+	{
+		ObjectMap attributes = modelNode.getAttributes ();
+		query.executeQuery (modelNode, attributes);
 		return attributes.toString ();
 	}
 }
