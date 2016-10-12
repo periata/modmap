@@ -19,8 +19,18 @@ public class ObjectMapDifferencer
 			// TODO is this a valid way of handling non-existing attributes?
 			JSONRepresentable lastValue = last.getAttribute(attribute.getKey ()).orElse(JSONRepresentable.NULL);
 			if (lastValue.equals (attribute.getValue ())) continue;
-			
-			result.add (insertion (attribute.getKey (), attribute.getValue ()));
+			if (lastValue instanceof ObjectMap && attribute.getValue () instanceof ObjectMap)
+			{
+				// items are sub-objects
+				result.add (modification (attribute.getKey (), differenceBetween ((ObjectMap) lastValue,
+				                                                                  (ObjectMap) attribute.getValue ())));
+				// TODO it may be best to replace anyway; work out when we should do this
+			}
+			else
+			{
+				// it's a plain value and has changed
+				result.add (insertion (attribute.getKey (), attribute.getValue ()));
+			}
 		}
 		for (Map.Entry<String, JSONRepresentable> attribute : last.attributeSet ())
 			if (!next.getAttribute (attribute.getKey ()).isPresent ())

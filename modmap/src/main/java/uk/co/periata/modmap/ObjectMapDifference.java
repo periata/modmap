@@ -8,7 +8,7 @@ import org.hamcrest.Matcher;
 /**
  * Represents a difference between two {@link ObjectMap} values.
  */
-public class ObjectMapDifference implements Comparable<ObjectMapDifference>
+public class ObjectMapDifference implements Comparable<ObjectMapDifference>, JSONRepresentable
 {
 	private final DifferenceType type;
 	private final String key;
@@ -143,5 +143,47 @@ public class ObjectMapDifference implements Comparable<ObjectMapDifference>
 	public static ObjectMapDifference deletion (String key)
 	{
 		return new ObjectMapDifference (DifferenceType.DELETION, key, JSONRepresentable.NULL);
+	}
+	
+	public static ObjectMapDifference modification (String key, Set<ObjectMapDifference> modifications)
+	{
+		return new ObjectMapDifference (DifferenceType.MODIFICATION, key, modifications);
+	}
+
+
+	@SuppressWarnings ("incomplete-switch")
+	@Override
+	public void appendTo (StringBuilder builder)
+	{
+		builder.append ("{ \"type\": \"").append (type.toString ())
+			   .append ("\", \"key\": \"").append (key).append ('"');  // nb: assumes key contains no special chars
+		
+		switch (type)
+		{
+		case INSERTION:
+			builder.append (", \"value\": ");
+			value.appendTo (builder);
+			break;
+		case MODIFICATION:
+			builder.append (", \"modifications\": [");
+			boolean needComma = false;
+			for (ObjectMapDifference mod : modifications)
+			{
+				if (needComma) builder.append (", ");
+				mod.appendTo (builder);
+				needComma = true;
+			}
+			builder.append (']');
+			break;
+		}
+		builder.append (" }");
+	}
+
+	@Override
+	public String toString ()
+	{
+		StringBuilder b = new StringBuilder ();
+		appendTo(b);
+		return b.toString ();
 	}
 }

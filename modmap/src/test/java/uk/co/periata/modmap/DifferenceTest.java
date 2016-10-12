@@ -1,9 +1,16 @@
 package uk.co.periata.modmap;
 
 import static org.junit.Assert.assertThat;
+
+import java.util.Collections;
+import java.util.Set;
+
 import static org.hamcrest.Matchers.*;
 
+import org.hamcrest.Matcher;
 import org.junit.Test;
+
+import static uk.co.periata.modmap.ObjectMapDifference.*;
 
 public class DifferenceTest
 {
@@ -30,5 +37,19 @@ public class DifferenceTest
 		                                   new ObjectMap()),
 		            contains (ObjectMapDifference.deletion ("key")));
 		
+	}
+	
+	@Test
+	public void changedChildNodeGivesModification ()
+	{
+		assertThat (sut.differenceBetween (new ObjectMap ().addAttribute ("sub", 
+		                                          new ObjectMap().addAttribute ("key", new JSONString ("value"))),
+		                                   new ObjectMap ().addAttribute ("sub", 
+		                                          new ObjectMap().addAttribute ("key", new JSONString ("newValue")))),
+		            contains (modification ("sub", Collections.singleton (
+		                                             insertion ("key", new JSONString ("newValue"))
+		                                           ))));
+		                                                            
+	
 	}
 }
