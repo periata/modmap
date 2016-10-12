@@ -14,7 +14,8 @@ import java.util.function.BiConsumer;
 public class CompositionRoot
 {
 	private ModelNode modelNode;
-
+	private QueryParser queryParser = new QueryParser ();
+	
 	public CompositionRoot (Object root)
 	{
 		this (root, new DefaultJSONRepresentableFactory ());
@@ -27,11 +28,7 @@ public class CompositionRoot
 	
 	public String executeQuery (String query)
 	{
-		// FIXME: should support more types of query!
-		if (query.length () > 0)
-			return executeQuery (new IdentifiedEntityQuery (query)).toString ();
-		else
-			return modelNode.getAttributes ().toString ();
+		return executeQuery (queryParser.parse (query));
 	}
 	
 	public String executeQuery (Query query)
