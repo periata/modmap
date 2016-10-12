@@ -11,4 +11,11 @@ public class QueryParserTest
 	{
 		assertSame (Query.NULL_QUERY, new QueryParser().parse(""));
 	}
+	
+	@Test
+	public void parseIdentifierAsIdentifiedEntityQuery ()
+	{
+		assertEquals (new IdentifiedEntityQuery ("anIdentifier"),
+		              new QueryParser().parse ("anIdentifier"));
+	}
 }

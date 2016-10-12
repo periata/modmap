@@ -5,7 +5,10 @@ public class QueryParser
 
 	public Query parse (String queryString)
 	{
-		return Query.NULL_QUERY;
+		if (queryString.length () == 0)
+			return Query.NULL_QUERY;
+		else
+			return new IdentifiedEntityQuery (queryString);
 	}
 
 }
