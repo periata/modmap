@@ -14,11 +14,11 @@ public class QueryMap
 		queries = new TreeMap<> ();
 	}
 
-	public Optional<JSONRepresentable> execute (String query)
+	public Optional<ModelNode> execute (String query)
 	{
 		return Optional.ofNullable (queries.get(query))
 					   .flatMap (QueryMethod::invoke)
-					   .map (reprFactory::representableFor);
+					   .map (node -> new ModelNode (node, reprFactory));
 	}
 
 	public void addQuery (String name, QueryMethod queryMethod)

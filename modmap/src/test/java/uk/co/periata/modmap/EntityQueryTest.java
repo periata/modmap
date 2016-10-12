@@ -1,6 +1,8 @@
 package uk.co.periata.modmap;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.Test;
 
@@ -21,10 +23,15 @@ public class EntityQueryTest
 	}
 	public static class EntityRoot
 	{
-		private SimpleEntity anEntity;
+		private SimpleEntity anEntity, anotherEntity;
 		@EntityQuery
 		public SimpleEntity getAnEntity () { return anEntity; }
 		public void setAnEntity (SimpleEntity e) { anEntity = e; }
+		@EntityQuery
+		public SimpleEntity getAnotherEntity () { return anotherEntity; }
+		public void setAnotherEntity (SimpleEntity anotherEntity) { this.anotherEntity = anotherEntity; }
+		@EntityQuery
+		public EntityRoot getSelf () { return this; }
 	}
 	
 	@Test
@@ -52,6 +59,39 @@ public class EntityQueryTest
 		assertEquals ("{ \"anEntity\": { \"name\": \"Bob\" } }",
 		              new CompositionRoot (r).executeQuery (
 		                       new IdentifiedEntityQuery ("anEntity")));
+
+	}
+	
+	@Test
+	public void multipleQueries ()
+	{
+		EntityRoot r = new EntityRoot ();
+		SimpleEntity e = new SimpleEntity ();
+		e.setName ("Bob");
+		r.setAnEntity (e);
+		e = new SimpleEntity ();
+		e.setName ("Alice");
+		r.setAnotherEntity (e);
 		
+		assertEquals ("{ \"anEntity\": { \"name\": \"Bob\" }, \"anotherEntity\": { \"name\": \"Alice\" } }",
+		              new CompositionRoot (r).executeQuery (
+		                       new CompoundEntityQuery (
+		                           new IdentifiedEntityQuery ("anEntity"),
+		                           new IdentifiedEntityQuery ("anotherEntity"))));
+	}
+	
+	@Test
+	public void focusReceiverCalledInSimpleQuery ()
+	{
+		AtomicReference<ModelNode> focus = new AtomicReference<ModelNode> (null);
+		
+		EntityRoot r = new EntityRoot ();
+		SimpleEntity e = new SimpleEntity ();
+		e.setName ("Bob");
+		r.setAnEntity (e);
+		
+		new CompositionRoot (r).executeQuery (new IdentifiedEntityQuery ("anEntity"), focus::set);
+		
+		assertSame (e, focus.get ().getNode ());		
 	}
 }

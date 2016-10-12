@@ -1,5 +1,7 @@
 package uk.co.periata.modmap;
 
+import java.util.function.Consumer;
+
 /**
  * Contains an object that defines the root of the hierarchy to be queried
  * and reported. The object specified should have attributes annotated
@@ -34,8 +36,13 @@ public class CompositionRoot
 	
 	public String executeQuery (Query query)
 	{
+		return executeQuery (query, Query.NULL_FOCUS_RECEIVER);
+	}
+
+	public String executeQuery (Query query, Consumer<ModelNode> focusReceiver)
+	{		
 		ObjectMap attributes = modelNode.getAttributes ();
-		query.executeQuery (modelNode, attributes);
+		query.executeQuery (modelNode, attributes, focusReceiver);
 		return attributes.toString ();
 	}
 }

@@ -5,9 +5,9 @@ import java.lang.reflect.Method;
 
 public class ModelNode
 {
-	private Class<?> clazz;
-	private Object node;
-	private JSONRepresentableFactory reprFactory;
+	private final Class<?> clazz;
+	private final Object node;
+	private final JSONRepresentableFactory reprFactory;
 
 	public ModelNode (Object node, JSONRepresentableFactory reprFactory)
 	{
@@ -21,6 +21,11 @@ public class ModelNode
 		return addAttributes (new ObjectMap ());
 	}
 
+	public Object getNode ()
+	{
+		return node;
+	}
+	
 	private ObjectMap addAttributes (ObjectMap objectMap)
 	{
 		// FIXME: cache the methods.
