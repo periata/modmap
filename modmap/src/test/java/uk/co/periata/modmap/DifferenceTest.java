@@ -1,16 +1,14 @@
 package uk.co.periata.modmap;
 
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.empty;
 import static org.junit.Assert.assertThat;
+import static uk.co.periata.modmap.ObjectMapDifference.insertion;
+import static uk.co.periata.modmap.ObjectMapDifference.modification;
 
 import java.util.Collections;
-import java.util.Set;
 
-import static org.hamcrest.Matchers.*;
-
-import org.hamcrest.Matcher;
 import org.junit.Test;
-
-import static uk.co.periata.modmap.ObjectMapDifference.*;
 
 public class DifferenceTest
 {

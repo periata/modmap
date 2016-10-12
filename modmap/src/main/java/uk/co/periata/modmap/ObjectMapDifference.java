@@ -3,8 +3,6 @@ package uk.co.periata.modmap;
 import java.util.Collections;
 import java.util.Set;
 
-import org.hamcrest.Matcher;
-
 /**
  * Represents a difference between two {@link ObjectMap} values.
  */
