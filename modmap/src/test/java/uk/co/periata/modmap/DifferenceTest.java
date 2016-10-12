@@ -15,4 +15,12 @@ public class DifferenceTest
 		assertThat (sut.differenceBetween(new ObjectMap (), new ObjectMap ()), 
 		            empty ());
 	}
+	
+	@Test
+	public void nodeWithAnExtraAttributeGivesInsertion ()
+	{
+		assertThat (sut.differenceBetween (new ObjectMap(),
+		                                   new ObjectMap ().addAttribute ("key", new JSONString ("value"))),
+		            contains (ObjectMapDifference.insertion ("key", new JSONString ("value"))));
+	}
 }
