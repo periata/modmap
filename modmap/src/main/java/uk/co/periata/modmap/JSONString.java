@@ -12,7 +12,7 @@ public class JSONString implements JSONRepresentable
 	}
 
 	@Override
-	public void appendTo (StringBuilder builder)
+	public void appendTo (Appendable builder)
 	{
 		builder.append ('"')
 			   .append (StringEscapeUtils.escapeJson (value))

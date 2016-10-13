@@ -4,7 +4,7 @@ public class JSONNull implements JSONRepresentable
 {
 
 	@Override
-	public void appendTo (StringBuilder builder)
+	public void appendTo (Appendable builder)
 	{
 		builder.append ("null");
 	}

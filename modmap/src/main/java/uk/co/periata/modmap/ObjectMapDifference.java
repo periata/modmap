@@ -151,7 +151,7 @@ public class ObjectMapDifference implements Comparable<ObjectMapDifference>, JSO
 
 	@SuppressWarnings ("incomplete-switch")
 	@Override
-	public void appendTo (StringBuilder builder)
+	public void appendTo (Appendable builder)
 	{
 		builder.append ("{ \"type\": \"").append (type.toString ())
 			   .append ("\", \"key\": \"").append (key).append ('"');  // nb: assumes key contains no special chars

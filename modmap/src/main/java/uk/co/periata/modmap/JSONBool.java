@@ -11,7 +11,7 @@ public class JSONBool implements JSONRepresentable
 	}
 
 	@Override
-	public void appendTo (StringBuilder builder)
+	public void appendTo (Appendable builder)
 	{
 		builder.append (toString());
 	}

@@ -10,8 +10,8 @@ public interface JSONRepresentable
 	/** An object intended to represent the JSON value "false" */
 	JSONRepresentable FALSE = new  JSONBool(false);
 
-	/** Appends the JSON representation of the object to a StringBuilder */
-	void appendTo (StringBuilder builder);
+	/** Appends the JSON representation of the object to an Appendable (e.g. a StringBuilder or Writer) */
+	void appendTo (Appendable builder);
 
 
 }
