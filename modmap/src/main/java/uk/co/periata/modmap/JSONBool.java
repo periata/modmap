@@ -1,5 +1,7 @@
 package uk.co.periata.modmap;
 
+import java.io.IOException;
+
 public class JSONBool implements JSONRepresentable
 {
 
@@ -11,7 +13,7 @@ public class JSONBool implements JSONRepresentable
 	}
 
 	@Override
-	public void appendTo (Appendable builder)
+	public void appendTo (Appendable builder) throws IOException
 	{
 		builder.append (toString());
 	}

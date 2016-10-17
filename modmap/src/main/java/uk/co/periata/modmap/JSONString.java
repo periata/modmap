@@ -1,5 +1,7 @@
 package uk.co.periata.modmap;
 
+import java.io.IOException;
+
 import org.apache.commons.lang3.StringEscapeUtils;
 
 public class JSONString implements JSONRepresentable
@@ -12,7 +14,7 @@ public class JSONString implements JSONRepresentable
 	}
 
 	@Override
-	public void appendTo (Appendable builder)
+	public void appendTo (Appendable builder) throws IOException
 	{
 		builder.append ('"')
 			   .append (StringEscapeUtils.escapeJson (value))
@@ -22,7 +24,14 @@ public class JSONString implements JSONRepresentable
 	public String toString ()
 	{
 		StringBuilder builder = new StringBuilder ();
-		appendTo (builder);
+		try
+		{
+			appendTo (builder);
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException ("Unexpected IOException appending to StringBuilder", e);
+		}
 		return builder.toString ();
 	}
 	@Override

@@ -1,5 +1,6 @@
 package uk.co.periata.modmap;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -21,12 +22,19 @@ public class ObjectMap implements JSONRepresentable
 	public String toString ()
 	{
 		StringBuilder builder = new StringBuilder ();
-		appendTo (builder);
+		try
+		{
+			appendTo (builder);
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException ("Unexpected IOException appending to StringBuilder", e);
+		}
 		return builder.toString ();
 	}
 	
 	@Override
-	public void appendTo (Appendable builder)
+	public void appendTo (Appendable builder) throws IOException
 	{
 		builder.append ("{ ");
 		boolean commaRequired = false;

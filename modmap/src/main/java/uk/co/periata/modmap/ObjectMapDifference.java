@@ -1,5 +1,6 @@
 package uk.co.periata.modmap;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
 
@@ -151,7 +152,7 @@ public class ObjectMapDifference implements Comparable<ObjectMapDifference>, JSO
 
 	@SuppressWarnings ("incomplete-switch")
 	@Override
-	public void appendTo (Appendable builder)
+	public void appendTo (Appendable builder) throws IOException
 	{
 		builder.append ("{ \"type\": \"").append (type.toString ())
 			   .append ("\", \"key\": \"").append (key).append ('"');  // nb: assumes key contains no special chars
@@ -181,7 +182,14 @@ public class ObjectMapDifference implements Comparable<ObjectMapDifference>, JSO
 	public String toString ()
 	{
 		StringBuilder b = new StringBuilder ();
-		appendTo(b);
+		try
+		{
+			appendTo (b);
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException ("Unexpected IOException appending to StringBuilder", e);
+		}
 		return b.toString ();
 	}
 }
