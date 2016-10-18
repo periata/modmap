@@ -26,6 +26,14 @@ public class ObjectMapDifferencer
 				                                                                  (ObjectMap) attribute.getValue ())));
 				// TODO it may be best to replace anyway; work out when we should do this
 			}
+			else if (lastValue instanceof JSONArray && attribute.getValue () instanceof JSONArray)
+			{
+				Set<ObjectMapDifference> arrayChanges = differenceBetween (
+				          (JSONArray)lastValue, 
+				          (JSONArray)attribute.getValue ());
+				if (!arrayChanges.isEmpty ())
+					result.add (modification (attribute.getKey (), arrayChanges));
+			}
 			else
 			{
 				// it's a plain value and has changed
@@ -35,6 +43,24 @@ public class ObjectMapDifferencer
 		for (Map.Entry<String, JSONRepresentable> attribute : last.attributeSet ())
 			if (!next.getAttribute (attribute.getKey ()).isPresent ())
 				result.add (deletion (attribute.getKey ()));
+		return result;
+	}
+
+	public Set<ObjectMapDifference> differenceBetween (JSONArray last, JSONArray next)
+	{
+		Set<ObjectMapDifference> result = setSupplier.get ();
+		JSONRepresentable[] lastItems = last.getItems();
+		JSONRepresentable[] nextItems = next.getItems();
+		for (int i = 0; i < nextItems.length; i ++)
+		{
+			if (i < lastItems.length && lastItems[i].equals (nextItems[i])) continue;
+			result.add (insertion (""+i, nextItems[i]));
+		}
+		if (nextItems.length == lastItems.length - 1)
+			result.add (deletion (""+nextItems.length));
+		else if (nextItems.length < lastItems.length - 1)
+			result.add (deletion ("" + nextItems.length + ":" + (lastItems.length - 1)));
+			                      
 		return result;
 	}
 
