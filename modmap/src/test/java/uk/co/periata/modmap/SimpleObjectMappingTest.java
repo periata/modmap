@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.TreeSet;
 
 import org.junit.Test;
 
@@ -113,6 +115,40 @@ public class SimpleObjectMappingTest
 		TestObject to1 = new TestObject (); to1.setName ("to1");
 		TestObject to2 = new TestObject (); to2.setName ("to2");
 		to.setObjects (Arrays.asList (to1, to2));
+		assertEquals ("{ \"objects\": [ { \"name\": \"to1\" }, { \"name\": \"to2\" } ] }",
+		              new CompositionRoot (to).executeQuery (""));
+	}
+	
+	@Test
+	public void otherCollectionsTreatedAsArrays ()
+	{
+		TestObject5 to = new TestObject5 ();
+		TestObject to1 = new TestObject (); to1.setName ("to1");
+		TestObject to2 = new TestObject (); to2.setName ("to2");
+		TreeSet<TestObject> ts = new TreeSet<> ((TestObject o1, TestObject o2) -> {
+			if (o1 == to1) return -1; // make sure to1 always sorts first
+			return 1;
+		});
+		ts.add (to1); ts.add (to2);
+		to.setObjects (ts);
+		assertEquals ("{ \"objects\": [ { \"name\": \"to1\" }, { \"name\": \"to2\" } ] }",
+		              new CompositionRoot (to).executeQuery (""));
+	}
+	
+	public static class TestObject6
+	{
+		private TestObject[] objects;
+		@Attribute
+		public TestObject[] getObjects() { return objects; }
+		public void setObjects(TestObject[] objects) {  this.objects = objects; }
+	}
+	@Test
+	public void arraysAreTreatedAsArrays ()
+	{
+		TestObject6 to = new TestObject6 ();
+		TestObject to1 = new TestObject (); to1.setName ("to1");
+		TestObject to2 = new TestObject (); to2.setName ("to2");
+		to.setObjects (new TestObject[] { to1, to2 });
 		assertEquals ("{ \"objects\": [ { \"name\": \"to1\" }, { \"name\": \"to2\" } ] }",
 		              new CompositionRoot (to).executeQuery (""));
 	}
