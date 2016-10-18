@@ -2,6 +2,9 @@ package uk.co.periata.modmap;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.junit.Test;
 
 public class SimpleObjectMappingTest
@@ -95,4 +98,22 @@ public class SimpleObjectMappingTest
 		              new CompositionRoot (to4).executeQuery(""));
 	}
 	
+	public static class TestObject5
+	{
+		private Collection<TestObject> objects;
+		@Attribute
+		public Collection<TestObject> getObjects() { return objects; }
+		public void setObjects(Collection<TestObject> objects) {  this.objects = objects; }
+	}
+		
+	@Test
+	public void listsAreTreatedAsArrays ()
+	{
+		TestObject5 to = new TestObject5 ();
+		TestObject to1 = new TestObject (); to1.setName ("to1");
+		TestObject to2 = new TestObject (); to2.setName ("to2");
+		to.setObjects (Arrays.asList (to1, to2));
+		assertEquals ("{ \"objects\": [ { \"name\": \"to1\" }, { \"name\": \"to2\" } ] }",
+		              new CompositionRoot (to).executeQuery (""));
+	}
 }
