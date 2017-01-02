@@ -51,6 +51,8 @@ public class ModelNode
 	{
 		if (name.startsWith ("get"))
 			return Character.toLowerCase (name.charAt (3)) + name.substring (4);
+		if (name.startsWith ("is"))
+			return Character.toLowerCase (name.charAt (2)) + name.substring (3);
 		return name;
 	}
 

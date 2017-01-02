@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.TreeSet;
 
 import org.junit.Test;
@@ -151,5 +150,57 @@ public class SimpleObjectMappingTest
 		to.setObjects (new TestObject[] { to1, to2 });
 		assertEquals ("{ \"objects\": [ { \"name\": \"to1\" }, { \"name\": \"to2\" } ] }",
 		              new CompositionRoot (to).executeQuery (""));
+	}
+	
+	public static class TestObject7
+	{
+		private int i = 1;
+		private long l = 2;
+		private float f = 0.5f;
+		private double d = 1.2;
+		private boolean b = true;
+		private byte by = 3;
+		private short s = 4;
+		@Attribute
+		public int getI ()
+		{
+			return i;
+		}
+		@Attribute
+		public long getL ()
+		{
+			return l;
+		}
+		@Attribute
+		public float getF ()
+		{
+			return f;
+		}
+		@Attribute
+		public double getD ()
+		{
+			return d;
+		}
+		@Attribute
+		public boolean isB ()
+		{
+			return b;
+		}
+		@Attribute
+		public byte getBy ()
+		{
+			return by;
+		}
+		@Attribute
+		public short getS ()
+		{
+			return s;
+		}
+	}
+	@Test
+	public void primitiveTypesHandled ()
+	{
+		assertEquals ("{ \"b\": true, \"by\": 3, \"d\": 1.2, \"f\": 0.5, \"i\": 1, \"l\": 2, \"s\": 4 }",
+		              new CompositionRoot (new TestObject7 ()).executeQuery (""));
 	}
 }
