@@ -38,8 +38,23 @@ public class CompositionRoot
 
 	String executeQuery (Query query, BiConsumer<ModelNode, ObjectMap> focusReceiver)
 	{		
+		return executeQueryToMap (query, focusReceiver).toString ();
+	}
+
+	public ObjectMap executeQueryToMap (String query)
+	{
+		return executeQueryToMap (queryParser.parse (query));
+	}
+	
+	public ObjectMap executeQueryToMap (Query query)
+	{
+		return executeQueryToMap (query, Query.NULL_FOCUS_RECEIVER);
+	}
+
+	ObjectMap executeQueryToMap (Query query, BiConsumer<ModelNode, ObjectMap> focusReceiver)
+	{
 		ObjectMap attributes = modelNode.getAttributes ();
 		query.executeQuery (modelNode, attributes, focusReceiver);
-		return attributes.toString ();
+		return attributes;
 	}
 }
