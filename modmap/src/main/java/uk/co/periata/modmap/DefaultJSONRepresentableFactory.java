@@ -10,6 +10,8 @@ public class DefaultJSONRepresentableFactory implements JSONRepresentableFactory
 	{
 		if (o == null)
 			return JSONRepresentable.NULL;
+		if (o instanceof JSONRepresentable)
+			return (JSONRepresentable)o;
 		if (o instanceof Boolean)
 			return ((Boolean)o).booleanValue () ? JSONRepresentable.TRUE : JSONRepresentable.FALSE;
 		if (o instanceof Number)
