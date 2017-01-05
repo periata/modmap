@@ -1,7 +1,6 @@
 package uk.co.periata.modmap;
 
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static uk.co.periata.modmap.ObjectMapDifference.*;
 
@@ -112,6 +111,16 @@ public class DifferenceTest
 		            contains (modification ("array", Collections.singleton (
 		                          insertion ("1", new JSONString("modified"))
 		                     ))));
+	}
+	@Test
+	public void identicalNumbersNotDetectedAsDifferent ()
+	{
+		JSONRepresentableFactory f = new DefaultJSONRepresentableFactory ();
+		
+		assertThat (sut.differenceBetween (
+		                     new ObjectMap().addAttribute ("test1", new JSONNumber (3)),
+		                     new ObjectMap().addAttribute ("test1", new JSONNumber (3))),
+		            empty());
 	}
 
 }
