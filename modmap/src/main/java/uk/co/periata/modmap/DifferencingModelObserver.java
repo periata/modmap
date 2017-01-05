@@ -71,7 +71,6 @@ public class DifferencingModelObserver <OBJECTMODEL, SUBJECTMODEL>
 		if (!differences.isEmpty ()) {
 			jsonConsumer.accept (jsonFactory.jsonStringFor (differences));
 			lastObjectMap = newObjectMap;
-			System.out.println ("New map saved as last");
 		}
 	}
 
